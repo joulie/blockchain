@@ -1,0 +1,47 @@
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.30;
+
+contract Test {
+    
+    uint nombre;
+    bool monBool;
+    address monAdresse;
+    string maPhrase;
+      
+    function getnombre() public view returns (uint) {
+        return nombre;
+    }
+
+    function setnombre(uint _nombre) external {
+        nombre = _nombre;
+    }
+
+    function getBool() public view returns (bool) {
+        return monBool;
+    }  
+
+    function setBool(bool _bool) public {
+         monBool = _bool;
+    } 
+
+    function setAdresse(address _adresse) external {
+            monAdresse = _adresse;
+    }
+
+    function getAdresse() public view returns (address) {
+         return monAdresse;
+    }
+
+    function setPhrase(string memory _phrase) internal {
+        maPhrase = _phrase;
+    }
+
+    function getPhrase() external view  returns (string memory){
+        return maPhrase;
+    }
+}
+
+uint : integer 2E8 = 256  -  uint
+uint : unsigned integer
+// uint8, uint16, uint32, uint64, uint128, uint256
+// int8, int16, int32, int64, int128, int256

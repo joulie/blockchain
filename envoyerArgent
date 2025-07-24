@@ -1,0 +1,83 @@
+// SPDX-License-Identifier: MIT
+pragma solidity 0.8.30;
+
+contract TestSendmoney {
+    
+    /*   address lastPerson;
+    uint balance;
+
+    function getLastPerson() public view returns (address) {
+        return lastPerson;
+    }
+
+    function getBalance() public view returns (uint256) {
+        return balance;
+    }
+
+    receive() external payable { 
+        lastPerson = msg.sender;
+        balance += msg.value;
+     }
+*/
+/*
+    mapping(address => uint) Balances;
+
+    function getBalance(address _monadresse) public view returns(uint) {
+        return Balances[_monadresse];
+    }
+
+    receive() external payable {
+        Balances[msg.sender] = msg.value;
+    }
+*/
+
+/*
+    struct balance {
+        uint money;
+        uint numPayments;
+    }
+
+    mapping(address => balance) Balances;
+
+    function getBalance() public view returns(uint) {
+        return Balances[msg.sender].money;
+    }
+    
+    function getNumPayments() public view returns (uint) {
+         return Balances[msg.sender].numPayments; 
+    }
+
+    receive() external payable {
+        Balances[msg.sender].money += msg.value;
+        Balances[msg.sender].numPayments += 1;  
+    }
+}
+*/
+
+    struct wallet {
+        uint balance;
+        uint numPayments;
+    }
+
+    mapping(address => wallet) Wallets;
+
+    function getTotalBalance() public view returns(uint) {
+        return address(this).balance;
+    }
+
+    function getBalance() public view returns(uint) {
+        return Wallets[msg.sender].balance;
+    }
+
+    function withdrawAllMoney(address payable _to) public {
+        uint _amount = Wallets[msg.sender].balance;
+        Wallets[msg.sender].balance = 0;
+        _to.transfer(_amount); 
+    }   
+
+    receive() external payable {
+        Wallets[msg.sender].balance += msg.value;
+        Wallets[msg.sender].numPayments += 1;
+    }
+}
+
