@@ -1,7 +1,7 @@
 # blockchain
 # 👋 Salut, moi c'est Alexandre Joulie
 
-🎯 En formation Développeur Blockchain Solidity Certification Alyra en Avril 2025  
+🎯 En formation Développeur Blockchain Solidity Certification Alyra en Avril 2026 
 🧠 15 ans d'expérience en ESN dont 8 ans chez Capgemini
 
 ---
