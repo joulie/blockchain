@@ -17,7 +17,7 @@
 
 ## 🧪 Projets blockchain (sélection)
 
-🔹 [**Voting DApp**](https://github.com/joulie/$$$ a renseigner $$$)  
+🔹 [**Voting DApp**](https://github.com/joulie/$$$ a renseigner dans le futur *)  
 > DApp de vote décentralisé (smart contract Solidity + React + Ethers.js)  
 > Déploiement sur Sepolia, front en Next.js + Wagmi.
 
