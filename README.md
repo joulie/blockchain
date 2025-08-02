@@ -25,8 +25,8 @@
 
 ## 🔍 En ce moment
 
-🚀 En formation blockchain chez Alyra (certification prévue : avril 2025)  
-🎯 En recherche active de missions freelance Web3 à partir d'avril 2025 (contact ci-dessous)
+🚀 En formation blockchain chez Alyra (certification prévue : avril 2026)  
+🎯 En recherche active de missions freelance Web3 à partir de mai 2026 (contact ci-dessous)
 
 ---
 
