@@ -1,9 +1,13 @@
 pragma solidity >=0.8.0 <0.8.9;
 
+// Déclaration d'un contrat simple nommé HelloWorld
 contract HelloWorld {
-	string myString = "Hello World !"; 
+    // Variable de type string initialisée à "Hello World !"
+    string myString = "Hello World !"; 
 } 
 
+// Déclaration d'un contrat simple nommé SimpleStorage
 contract SimpleStorage {
-	uint integer = 100; // sera stocké de manière permanente dans la Blockchain
-} 
+    // Variable entière stockée de manière permanente dans la Blockchain
+    uint integer = 100; // sera stocké de manière permanente dans la Blockchain
+}
