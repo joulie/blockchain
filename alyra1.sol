@@ -34,11 +34,12 @@ contract NomDuContrat{
     // Fonction pour envoyer des ethers avec send
     function sendEther(address payable _to) public payable returns (bool) {
         bool sent = _to.send(msg.value);
+        require(sent == true, "Failed to send Ether");
         return sent;
     }
 
     // Fonction pour envoyer des ethers avec transfer
-    function transferEther(address payable _to) public payable {
+    function transferEther(address payable _to) external payable {
         _to.transfer(msg.value);
     }
 
@@ -47,5 +48,5 @@ contract NomDuContrat{
         (bool sent, ) = _to.call{value: msg.value}("");
         return sent;
     }
-//cours à 1h43
+
 }
