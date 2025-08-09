@@ -48,5 +48,6 @@ contract NomDuContrat{
         (bool sent, ) = _to.call{value: msg.value}("");
         return sent;
     }
+//20min27
 
 }
