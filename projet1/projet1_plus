@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Voting is Ownable {
+    constructor(address initialOwner) Ownable(initialOwner) {}
     // Structures
     struct Voter {
         bool isRegistered; // indique si l'électeur est enregistré
@@ -48,9 +49,31 @@ contract Voting is Ownable {
         require(
             workflowStatus == _status,
             string(abi.encodePacked("You are not in the right workflow status. Current status: ",
-                    uint(workflowStatus)))
+                    getWorkflowStatusName() ))
         );
         _;
+    }
+
+    modifier onlyOwnerWithError() {
+        require(msg.sender == owner(), string(abi.encodePacked("You are not the owner. Sender: ", toAsciiString(msg.sender))));
+        _;
+    }
+
+    function toAsciiString(address x) internal pure returns (string memory) {
+        bytes memory s = new bytes(42);
+        s[0] = '0';
+        s[1] = 'x';
+        for (uint i = 0; i < 20; i++) {
+            uint8 b = uint8(uint(uint160(x)) / (2**(8*(19 - i))));
+            uint8 hi = b / 16;
+            uint8 lo = b - 16 * hi;
+            s[2*i+2] = char(hi);
+            s[2*i+3] = char(lo);
+        }
+        return string(s);
+    }
+    function char(uint8 b) internal pure returns (bytes1) {
+        return bytes1(uint8(b + (b < 10 ? 48 : 87)));
     }
 
     // onlyOwner de la lib OpenZeppelin Ownable : ne peuvent être appelées que par l'administrateur du contrat
@@ -60,31 +83,31 @@ contract Voting is Ownable {
         emit VoterRegistered(_voter);
     }
 
-    function startProposalsRegistration() external onlyOwner isAtStatus(WorkflowStatus.RegisteringVoters) {
+    function startProposalsRegistration() external onlyOwnerWithError isAtStatus(WorkflowStatus.RegisteringVoters) {
         WorkflowStatus previous = workflowStatus;
         workflowStatus = WorkflowStatus.ProposalsRegistrationStarted;
         emit WorkflowStatusChange(previous, workflowStatus);
     }
 
-    function endProposalsRegistration() external onlyOwner isAtStatus(WorkflowStatus.ProposalsRegistrationStarted) {
+    function endProposalsRegistration() external onlyOwnerWithError isAtStatus(WorkflowStatus.ProposalsRegistrationStarted) {
         WorkflowStatus previous = workflowStatus;
         workflowStatus = WorkflowStatus.ProposalsRegistrationEnded;
         emit WorkflowStatusChange(previous, workflowStatus);
     }
 
-    function startVotingSession() external onlyOwner isAtStatus(WorkflowStatus.ProposalsRegistrationEnded) {
+    function startVotingSession() external onlyOwnerWithError isAtStatus(WorkflowStatus.ProposalsRegistrationEnded) {
         WorkflowStatus previous = workflowStatus;
         workflowStatus = WorkflowStatus.VotingSessionStarted;
         emit WorkflowStatusChange(previous, workflowStatus);
     }
 
-    function endVotingSession() external onlyOwner isAtStatus(WorkflowStatus.VotingSessionStarted) {
+    function endVotingSession() external onlyOwnerWithError isAtStatus(WorkflowStatus.VotingSessionStarted) {
         WorkflowStatus previous = workflowStatus;
         workflowStatus = WorkflowStatus.VotingSessionEnded;
         emit WorkflowStatusChange(previous, workflowStatus);
     }
 
-    function tallyVotes() external onlyOwner isAtStatus(WorkflowStatus.VotingSessionEnded) {
+    function tallyVotes() external onlyOwnerWithError isAtStatus(WorkflowStatus.VotingSessionEnded) {
         uint _winningProposalId;
         uint highestVoteCount = 0;
         bool tie = false;
@@ -129,4 +152,22 @@ contract Voting is Ownable {
     function getProposalsCount() external view returns (uint) {
         return proposals.length;
     }
+
+    function getProposals() external view returns (Proposal[] memory) {
+        return proposals;
+    }
+
+    function getWorkflowStatusName() public view returns (string memory) {
+        if (workflowStatus == WorkflowStatus.RegisteringVoters) return "RegisteringVoters";
+        if (workflowStatus == WorkflowStatus.ProposalsRegistrationStarted) return "ProposalsRegistrationStarted";
+        if (workflowStatus == WorkflowStatus.ProposalsRegistrationEnded) return "ProposalsRegistrationEnded";
+        if (workflowStatus == WorkflowStatus.VotingSessionStarted) return "VotingSessionStarted";
+        if (workflowStatus == WorkflowStatus.VotingSessionEnded) return "VotingSessionEnded";
+        if (workflowStatus == WorkflowStatus.VotesTallied) return "VotesTallied";
+        return "Unknown";
+    }
+
+    //ajoutés : gestion des exequos (le premier qui a étét le plus haut est retenu)
+    //          lister les propositions
+    //          gérer l'erreur si ce n'est pas l'owner qui tente les appels
 }
