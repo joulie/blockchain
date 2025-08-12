@@ -54,28 +54,6 @@ contract Voting is Ownable {
         _;
     }
 
-    modifier onlyOwnerWithError() {
-        require(msg.sender == owner(), string(abi.encodePacked("You are not the owner. Sender: ", toAsciiString(msg.sender))));
-        _;
-    }
-
-    function toAsciiString(address x) internal pure returns (string memory) {
-        bytes memory s = new bytes(42);
-        s[0] = '0';
-        s[1] = 'x';
-        for (uint i = 0; i < 20; i++) {
-            uint8 b = uint8(uint(uint160(x)) / (2**(8*(19 - i))));
-            uint8 hi = b / 16;
-            uint8 lo = b - 16 * hi;
-            s[2*i+2] = char(hi);
-            s[2*i+3] = char(lo);
-        }
-        return string(s);
-    }
-    function char(uint8 b) internal pure returns (bytes1) {
-        return bytes1(uint8(b + (b < 10 ? 48 : 87)));
-    }
-
     // onlyOwner de la lib OpenZeppelin Ownable : ne peuvent être appelées que par l'administrateur du contrat
     function registerVoter(address _voter) external onlyOwner isAtStatus(WorkflowStatus.RegisteringVoters) {
         require(voters[_voter].isRegistered == false, "Voter is already registered");
@@ -83,31 +61,31 @@ contract Voting is Ownable {
         emit VoterRegistered(_voter);
     }
 
-    function startProposalsRegistration() external onlyOwnerWithError isAtStatus(WorkflowStatus.RegisteringVoters) {
+    function startProposalsRegistration() external onlyOwner isAtStatus(WorkflowStatus.RegisteringVoters) {
         WorkflowStatus previous = workflowStatus;
         workflowStatus = WorkflowStatus.ProposalsRegistrationStarted;
         emit WorkflowStatusChange(previous, workflowStatus);
     }
 
-    function endProposalsRegistration() external onlyOwnerWithError isAtStatus(WorkflowStatus.ProposalsRegistrationStarted) {
+    function endProposalsRegistration() external onlyOwner isAtStatus(WorkflowStatus.ProposalsRegistrationStarted) {
         WorkflowStatus previous = workflowStatus;
         workflowStatus = WorkflowStatus.ProposalsRegistrationEnded;
         emit WorkflowStatusChange(previous, workflowStatus);
     }
 
-    function startVotingSession() external onlyOwnerWithError isAtStatus(WorkflowStatus.ProposalsRegistrationEnded) {
+    function startVotingSession() external onlyOwner isAtStatus(WorkflowStatus.ProposalsRegistrationEnded) {
         WorkflowStatus previous = workflowStatus;
         workflowStatus = WorkflowStatus.VotingSessionStarted;
         emit WorkflowStatusChange(previous, workflowStatus);
     }
 
-    function endVotingSession() external onlyOwnerWithError isAtStatus(WorkflowStatus.VotingSessionStarted) {
+    function endVotingSession() external onlyOwner isAtStatus(WorkflowStatus.VotingSessionStarted) {
         WorkflowStatus previous = workflowStatus;
         workflowStatus = WorkflowStatus.VotingSessionEnded;
         emit WorkflowStatusChange(previous, workflowStatus);
     }
 
-    function tallyVotes() external onlyOwnerWithError isAtStatus(WorkflowStatus.VotingSessionEnded) {
+    function tallyVotes() external onlyOwner isAtStatus(WorkflowStatus.VotingSessionEnded) {
         uint _winningProposalId;
         uint highestVoteCount = 0;
         for (uint i = 0; i < proposals.length; i++) {
