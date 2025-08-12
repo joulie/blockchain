@@ -6,6 +6,7 @@ contract MonContrat {
     
     // Partie 2 : Variable d'état
     address public storedAddress;
+    constructor() payable{}
 
     // Fonction pour définir la variable
     function setAddress(address _address) public {
@@ -24,7 +25,14 @@ contract MonContrat {
 
      // Fonction pour envoyer des ethers avec transfer
     function transferEther(address _addr) external payable {
+        require(msg.value >= 1, "envoi min 1 wei");
         payable(_addr).transfer(msg.value);
     }
 
+    // Fonction pour envoyer des ethers avec transfer
+    function transferEtherToAddress(uint balanceMin) external payable {
+        require(msg.value >= 1, "envoi min 1 wei");
+        require(payable(storedAddress).balance >= balanceMin, "pas assez de fond sur cette adresse");
+        payable(storedAddress).transfer(msg.value);
+    }
 }
