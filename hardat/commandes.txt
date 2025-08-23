@@ -1,0 +1,5 @@
+npm install --save-dev hardhat@^2.22.18
+npx hardhat init
+npx hardhat compile
+npx hardhat node
+chainlist.org : pour voir les chainID des differentes blockchain
