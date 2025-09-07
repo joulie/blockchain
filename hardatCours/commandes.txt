@@ -1,0 +1,18 @@
+npm install --save-dev hardhat@^2.22.18
+npx hardhat init
+npx hardhat compile
+
+chainlist.org : pour voir les chainID des differentes blockchain
+
+npx hardhat node   // pour lancer la blockchain locale hardat sur le port 8545
+npx hardhat run scripts/deploy.ts --network localhost
+
+ rm -rf node_modules package-lock.json
+
+npm install --save-dev @nomicfoundation/hardhat-ignition@0.15.11 : besoni de passer en hardat 3 pour avoir les dernieres versions
+ npx hardat ignition deploy ignition/modules/SimpleStorage.ts --network localhost
+
+ pour utiliser un .env
+ npm install dotenv
+
+ 1h34

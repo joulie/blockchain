@@ -1,6 +1,0 @@
-npm install --save-dev hardhat@^2.22.18
-npx hardhat init
-npx hardhat compile
-npx hardhat node   // pour lancer la blockchain locale hardat sur le port 8545
-chainlist.org : pour voir les chainID des differentes blockchain
-23min
