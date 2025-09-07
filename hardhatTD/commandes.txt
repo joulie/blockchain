@@ -1,0 +1,4 @@
+a chaque install d'un projet hardhat dans chaque nouveau dossier faire
+    npm install hardhat
+    npx hardhat init
+
