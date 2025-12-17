@@ -2,17 +2,13 @@
 import { expect } from "chai";
 // Import de l'API Hardhat pour interagir avec Ethereum
 import { ethers } from "hardhat";
-// Import du type généré pour notre contrat Voting
-import { Voting } from "../typechain-types"; 
 
-/**
- * Tests Unitaires sur Voting 
- */
 describe("Voting", function () {
-  /**
-   * Vérification de l'émission de l'event VoterRegistered
-   * il faut que il y ait émission d'un event avec l'adresse du votant
-   */
+  /***************************************************************************************************** 
+   *                                    TU sur les events
+   ****************************************************************************************************/
+
+  //Vérification de l'émission de l'event VoterRegistered : émission d'un event avec l'adresse du votant
   it("Should emit event VoterRegistered when we add a voter", async function () {
     // Déploiement du contrat
     const voting = await ethers.deployContract("Voting");
@@ -23,11 +19,7 @@ describe("Voting", function () {
     await expect(voting.addVoter(voter1.address)).to.emit(voting, "VoterRegistered").withArgs(voter1.address);
   });
 
-  /**
-   * Test : Comptage des events VoterRegistered
-   * Utilise queryFilter pour récupérer tous les events émis depuis le déploiement
-   * et vérifier que leur nombre correspond au nombre de votants enregistrés
-   */
+  // Comptage des events VoterRegistered
   it("La somme des events VoterRegistered devrait correspondre au nombre de votants", async function () {
     // Déploiement du contrat
     const voting = await ethers.deployContract("Voting");
@@ -36,8 +28,7 @@ describe("Voting", function () {
     const voter1 = signers[1];
     const voter2 = signers[2];
     const voter3 = signers[3];
-    // Enregistrement du numéro de bloc au moment du déploiement
-    // pour filtrer les events depuis ce point
+    // Enregistrement du numéro de bloc au moment du déploiement pour filtrer les events depuis ce point
     const deploymentBlockNumber = await ethers.provider.getBlockNumber();
 
     // Enregistrement de plusieurs votants
@@ -54,5 +45,4 @@ describe("Voting", function () {
     // Vérification : 3 votants ajoutés = 3 events émis
     expect(events.length).to.equal(3);
   });
-
 });
