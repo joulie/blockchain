@@ -1,3 +1,5 @@
 {
-    "solidity.compileUsingRemoteVersion": "v0.8.28+commit.7893614a"
+    "solidity.compileUsingRemoteVersion": "v0.8.28+commit.7893614a",
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 500
 }

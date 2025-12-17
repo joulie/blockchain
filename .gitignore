@@ -1,1 +1,21 @@
-projet1_/
+node_modules/
+dist/
+.env
+
+# Hardhat - projet2
+projet2/node_modules/
+projet2/dist/
+projet2/.env
+projet2/cache/
+projet2/artifacts/
+projet2/typechain-types/
+projet2/coverage/
+projet2/coverage.json
+projet2/logs/
+projet2/package-lock.json
+projet2/TU/Voting.test.ts
+
+# Fichiers IDE
+.idea/
+*.swp
+*.swo
