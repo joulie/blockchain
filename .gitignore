@@ -14,6 +14,7 @@ projet2/coverage.json
 projet2/logs/
 projet2/package-lock.json
 projet2/TU/Voting.test.ts
+projet2/TU/Voting.total.t.ts
 
 # Fichiers IDE
 .idea/
