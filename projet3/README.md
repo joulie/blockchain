@@ -108,3 +108,7 @@ npx hardhat vars set SEPOLIA_RPC_URL
 # Configurer la clé API Etherscan (optionnel)
 npx hardhat vars set ETHERSCAN_API_KEY
 ```
+aller sur reOwn pour avoir un ID d'app https://dashboard.reown.com/ 
+renseigner sa NEXT_project_id de reown dans son .env.local
+copier l'ABI du contrat
+cd /home/alex/dev/blockchain/projet3 && mkdir -p frontend/lib/contracts && node -e "const fs = require('fs'); const abi = require('./artifacts/contracts/Voting.sol/Voting.json').abi; fs.writeFileSync('frontend/lib/contracts/VotingABI.json', JSON.stringify(abi, null, 2));"
