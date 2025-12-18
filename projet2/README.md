@@ -138,5 +138,5 @@ npx hardhat help
 npx hardhat node
 
 # Recompiler et relancer
-cd /home/alex/dev/blockchain/projet2 && npx hardhat clean && npx hardhat compile --force
+cd /home/alex/dev/blockchain/projet2 && npx hardhat clean && npx hardhat compile --force   
 cd /home/alex/dev/blockchain/projet2 && npx hardhat test TU/Voting.t.ts
