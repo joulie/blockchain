@@ -103,8 +103,8 @@ npm install --save-dev @nomicfoundation/hardhat-chai-matchers chai --legacy-peer
 mkdir -p contracts
 
 ## En cas de problème : Réinitialisation complète du projet
-rm -rf node_modules package-lock.json
-# Puis réinstaller avec npm install
+rm -rf node_modules package-lock.json  
+Puis réinstaller avec npm install
 
 ## Compilation du contrat
 npx hardhat compile
