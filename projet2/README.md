@@ -17,17 +17,17 @@ Le contrat Voting gère un processus de vote en 6 étapes :
 
 ## Contenu du répertoire TU concernant les Tests Unitaires
 
-#### 🎯 Tests sur les Events
+#### Tests sur les Events
 - **Émission de VoterRegistered** : Vérifie qu'un event est émis lors de l'ajout d'un votant
 - **Comptage de VoterRegistered** : Vérifie que le nombre d'events correspond au nombre de votants ajoutés (3 votants = 3 events)
 - **Non testés** : `ProposalRegistered(uint)` (ajout d'une proposition) & `Voted(address, uint)` (vote)
 
-#### ⛔ Tests sur les Reverts
+#### Tests sur les Reverts
 - **Double enregistrement** : Vérifie qu'on ne peut pas ajouter le même votant deux fois
 - **Vote d'un non-votant** : Vérifie qu'une personne non enregistrée ne peut pas proposer
 - **Double vote** : Vérifie qu'un votant ne peut pas voter deux fois
 
-#### 🔄 Test du Cycle Complet
+#### Test du Cycle Complet
 - **Workflow complet** : Teste toutes les phases du vote de bout en bout
   - Enregistrement de 3 votants
   - Enregistrement de 3 propositions
