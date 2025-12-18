@@ -20,6 +20,7 @@ Le contrat Voting gère un processus de vote en 6 étapes :
 #### 🎯 Tests sur les Events
 - **Émission de VoterRegistered** : Vérifie qu'un event est émis lors de l'ajout d'un votant
 - **Comptage de VoterRegistered** : Vérifie que le nombre d'events correspond au nombre de votants ajoutés (3 votants = 3 events)
+- **non testés** `ProposalRegistered(uint)` (ajout d'une proposition) & `Voted(address, uint)` (vote)
 
 #### ⛔ Tests sur les Reverts
 - **Double enregistrement** : Vérifie qu'on ne peut pas ajouter le même votant deux fois
@@ -66,15 +67,6 @@ npx hardhat test TU/Voting.t.ts
 ```bash
 npx hardhat coverage --testfiles "TU/Voting.t.ts"
 ```
-
-## Scenarios de tests
-
-### Événements Testés
-- `VoterRegistered(address)` - Émis lors de l'ajout d'un votant
-- `WorkflowStatusChange(WorkflowStatus, WorkflowStatus)` - Émis lors des transitions
-### Événements restants à tester 
-- `ProposalRegistered(uint)` - Émis lors de l'ajout d'une proposition
-- `Voted(address, uint)` - Émis lors d'un vote
 
 ## Structure du Projet
 
