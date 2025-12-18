@@ -47,7 +47,7 @@ Le contrat Voting gère un processus de vote en 6 étapes :
 ## Installation
 
 ```bash
-npm install
+npm install --legacy-peer-deps
 ```
 
 ## Compilation
@@ -98,13 +98,10 @@ Projet réalisé dans le cadre de la formation Alyra
 ### Installation des packages pour les tests
 `npm install --save-dev @nomicfoundation/hardhat-chai-matchers chai --legacy-peer-deps`
 
-### Organisation des fichiers
-`mkdir -p contracts`
-
 ### En cas de problème : Réinitialisation complète du projet
 ```
 rm -rf node_modules package-lock.json  
-Puis réinstaller avec npm install
+npm install
 ```
 
 ### Compilation du contrat
