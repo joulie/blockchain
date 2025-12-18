@@ -90,7 +90,21 @@ passage de uint à uint256 : pour la DAPP quand on n'est pas exclusivement en so
 specification des private : pas accessible depuis une DAPP si on ecrit seulement Proposal[]   proposalsArray; : si on n'ecrit pas private c'est internal et non accessible par la DAPP  
 
 utilisation de .env
-```cd /home/alex/dev/blockchain/projet3 && npm install dotenv --legacy-peer-deps```
+`cd /home/alex/dev/blockchain/projet3 && npm install dotenv --legacy-peer-deps`
 
 tester le deploiement sur sepolia  
-```cd /home/alex/dev/blockchain/projet3 && npx hardhat run scripts/deploy.ts```
+`cd /home/alex/dev/blockchain/projet3 && npx hardhat run scripts/deploy.ts`
+
+utilisation de hardat vars plutot que le .env
+```bash
+cd /home/alex/dev/blockchain/projet3
+
+# Configurer la clé privée
+npx hardhat vars set PRIVATE_KEY
+
+# Configurer l'URL RPC Sepolia
+npx hardhat vars set SEPOLIA_RPC_URL
+
+# Configurer la clé API Etherscan (optionnel)
+npx hardhat vars set ETHERSCAN_API_KEY
+```
