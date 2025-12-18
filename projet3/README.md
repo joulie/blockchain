@@ -109,6 +109,17 @@ npx hardhat vars set SEPOLIA_RPC_URL
 npx hardhat vars set ETHERSCAN_API_KEY
 ```
 aller sur reOwn pour avoir un ID d'app https://dashboard.reown.com/ 
-renseigner sa NEXT_project_id de reown dans son .env.local
+renseigner sa NEXT_project_id de reown dans son .env.local du front
 copier l'ABI du contrat
-cd /home/alex/dev/blockchain/projet3 && mkdir -p frontend/lib/contracts && node -e "const fs = require('fs'); const abi = require('./artifacts/contracts/Voting.sol/Voting.json').abi; fs.writeFileSync('frontend/lib/contracts/VotingABI.json', JSON.stringify(abi, null, 2));"
+```cd /home/alex/dev/blockchain/projet3 && mkdir -p frontend/lib/contracts && node -e "const fs = require('fs'); const abi = require('./artifacts/contracts/Voting.sol/Voting.json').abi; fs.writeFileSync('frontend/lib/contracts/VotingABI.json', JSON.stringify(abi, null, 2));"```
+install des dependances fonctionnelles
+```cd /home/alex/dev/blockchain/projet3/frontend && npm uninstall wagmi @rainbow-me/rainbowkit && npm install wagmi@^2.19.0 @rainbow-me/rainbowkit@^2.2.0 --legacy-peer-deps```
+lancer le projet
+```npx hardhat run scripts/deploy.ts --network localhost```
+démarrer le noeud local
+```cd /home/alex/dev/blockchain/projet3 && npx hardhat node```
+deployer le contrat
+```cd /home/alex/dev/blockchain/projet3 && npx hardhat run scripts/deploy.ts --network localhost```
+```cd /home/alex/dev/blockchain/projet3 && npx hardhat run scripts/deploy.ts --network sepolia```
+lancer le sercvuer next
+```cd /home/alex/dev/blockchain/projet3/frontend && npm run dev```
