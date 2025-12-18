@@ -126,6 +126,6 @@ lancer le projet
 ou ```cd /home/alex/dev/blockchain/projet3 && npx hardhat run scripts/deploy.ts --network sepolia```
 4. récupérer le NEXT_PUBLIC_VOTING_CONTRACT_ADDRESS=0x5FbDB2315678afecb367f032d93F642f64180aa3 dans le .env.local du front
 5. lancer le serveur next
-```cd /home/alex/dev/blockchain/projet3/frontend && npm run dev```
+```cd /home/alex/dev/blockchain/projet3/frontend && npm run dev```  
 si on modifie le contrat il faut le recompiler 
 `cd /home/alex/dev/blockchain/projet3 && npx hardhat clean && npx hardhat compile`
