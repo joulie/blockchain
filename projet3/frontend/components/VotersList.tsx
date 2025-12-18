@@ -70,8 +70,8 @@ export default function VotersList() {
   }
 
   return (
-    <div className="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg shadow-md p-6 border-2 border-indigo-200">
-      <h2 className="text-xl font-bold text-indigo-800 mb-4">👥 Votants Enregistrés</h2>
+    <div className="bg-white rounded-lg shadow-md p-6 border-2 border-purple-200">
+      <h2 className="text-xl font-bold text-purple-800 mb-4">Votants Enregistrés</h2>
       
       {voters.length === 0 ? (
         <p className="text-gray-500 text-sm text-center py-4">
@@ -80,19 +80,19 @@ export default function VotersList() {
       ) : (
         <div className="space-y-2">
           <p className="text-sm text-gray-600 mb-3">
-            Total : <span className="font-semibold text-indigo-700">{voters.length}</span> votant{voters.length > 1 ? 's' : ''}
+            Total : <span className="font-semibold text-purple-700">{voters.length}</span> votant{voters.length > 1 ? 's' : ''}
           </p>
           <div className="max-h-96 overflow-y-auto space-y-2">
             {voters.map((voter, index) => (
               <div 
                 key={voter}
-                className="bg-white p-3 rounded-lg border border-indigo-100 hover:border-indigo-300 transition-colors"
+                className="bg-purple-50 p-3 rounded-lg border border-purple-200 hover:border-purple-400 transition-colors"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-mono text-gray-700 break-all">
                     {voter}
                   </span>
-                  <span className="ml-2 text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full">
+                  <span className="ml-2 text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full">
                     #{index + 1}
                   </span>
                 </div>

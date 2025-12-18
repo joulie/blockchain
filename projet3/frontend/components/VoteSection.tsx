@@ -120,7 +120,7 @@ export default function VoteSection() {
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">🗳️ Voter</h2>
+      <h2 className="text-xl font-bold text-gray-800 mb-4">Voter</h2>
       
       {/* Messages d'erreur et de succès */}
       {errorMessage && (
@@ -142,7 +142,7 @@ export default function VoteSection() {
           <select
             value={selectedProposal}
             onChange={(e) => setSelectedProposal(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="">Choisir une proposition...</option>
             {proposals.map((proposal, index) => (
@@ -155,14 +155,14 @@ export default function VoteSection() {
         <button
           type="submit"
           disabled={isPending || isConfirming || !selectedProposal}
-          className="w-full px-6 py-3 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
         >
-          {isPending || isConfirming ? '⏳ Vote en cours...' : '✅ Confirmer mon vote'}
+          {isPending || isConfirming ? 'Vote en cours...' : 'Confirmer mon vote'}
         </button>
       </form>
       {isSuccess && (
         <p className="mt-4 text-sm text-green-600 text-center">
-          ✅ Vote enregistré avec succès !
+          Vote enregistré avec succès !
         </p>
       )}
     </div>

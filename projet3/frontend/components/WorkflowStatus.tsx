@@ -36,7 +36,7 @@ export default function WorkflowStatus() {
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">📊 Statut du Vote</h2>
+      <h2 className="text-xl font-bold text-gray-800 mb-4">Statut du Vote</h2>
       <div className="flex items-center space-x-4">
         <div className="flex-1">
           <div className="relative">

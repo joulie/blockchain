@@ -118,7 +118,7 @@ export default function AdminPanel() {
 
   return (
     <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg shadow-md p-6 border-2 border-purple-200">
-      <h2 className="text-xl font-bold text-purple-800 mb-4">👑 Panel Administrateur</h2>
+      <h2 className="text-xl font-bold text-purple-800 mb-4">Panel Administrateur</h2>
       
       {/* Messages d'erreur et de succès */}
       {errorMessage && (
@@ -164,52 +164,45 @@ export default function AdminPanel() {
           <button
             onClick={() => changeWorkflowStatus('startProposalsRegistering')}
             disabled={isPending || isConfirming}
-            className="px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 disabled:bg-gray-400 transition-colors"
+            className="px-4 py-2 bg-blue-400 text-white text-sm rounded-lg hover:bg-blue-500 disabled:bg-gray-300 transition-colors"
           >
-            ▶️ Démarrer propositions
+            Démarrer propositions
           </button>
           <button
             onClick={() => changeWorkflowStatus('endProposalsRegistering')}
             disabled={isPending || isConfirming}
-            className="px-4 py-2 bg-orange-600 text-white text-sm rounded-lg hover:bg-orange-700 disabled:bg-gray-400 transition-colors"
+            className="px-4 py-2 bg-blue-400 text-white text-sm rounded-lg hover:bg-blue-500 disabled:bg-gray-300 transition-colors"
           >
-            ⏸️ Fin propositions
+            Fin propositions
           </button>
           <button
             onClick={() => changeWorkflowStatus('startVotingSession')}
             disabled={isPending || isConfirming}
-            className="px-4 py-2 bg-green-600 text-white text-sm rounded-lg hover:bg-green-700 disabled:bg-gray-400 transition-colors"
+            className="px-4 py-2 bg-blue-400 text-white text-sm rounded-lg hover:bg-blue-500 disabled:bg-gray-300 transition-colors"
           >
-            ▶️ Démarrer vote
+            Démarrer vote
           </button>
           <button
             onClick={() => changeWorkflowStatus('endVotingSession')}
             disabled={isPending || isConfirming}
-            className="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 disabled:bg-gray-400 transition-colors"
+            className="px-4 py-2 bg-blue-400 text-white text-sm rounded-lg hover:bg-blue-500 disabled:bg-gray-300 transition-colors"
           >
-            ⏹️ Fin vote
+            Fin vote
           </button>
           <button
             onClick={() => changeWorkflowStatus('tallyVotes')}
             disabled={isPending || isConfirming}
-            className="col-span-2 px-4 py-2 bg-purple-600 text-white text-sm rounded-lg hover:bg-purple-700 disabled:bg-gray-400 transition-colors"
+            className="col-span-2 px-4 py-2 bg-blue-400 text-white text-sm rounded-lg hover:bg-blue-500 disabled:bg-gray-300 transition-colors"
           >
-            🧮 Comptabiliser les votes
-          </button>
-          <button
-            onClick={() => changeWorkflowStatus('resetWorkflow')}
-            disabled={isPending || isConfirming}
-            className="col-span-2 px-4 py-2 bg-yellow-600 text-white text-sm rounded-lg hover:bg-yellow-700 disabled:bg-gray-400 transition-colors"
-          >
-            🔄 Recommencer un nouveau vote
+            Comptabiliser les votes
           </button>
         </div>
       </div>
 
       {(isPending || isConfirming) && (
         <p className="mt-4 text-sm text-gray-600 text-center">
-          {isPending && '⏳ Confirmation en cours...'}
-          {isConfirming && '⏳ Transaction en cours...'}
+          {isPending && 'Confirmation en cours...'}
+          {isConfirming && 'Transaction en cours...'}
         </p>
       )}
     </div>
