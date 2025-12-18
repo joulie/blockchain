@@ -1,8 +1,10 @@
-import { HardhatUserConfig } from "hardhat/config";
+import { HardhatUserConfig, vars } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import * as dotenv from "dotenv";
 
-dotenv.config();
+// Récupération sécurisée des variables avec Hardhat Vars
+const PRIVATE_KEY = vars.get("PRIVATE_KEY", "");
+const SEPOLIA_RPC_URL = vars.get("SEPOLIA_RPC_URL", "https://eth-sepolia.g.alchemy.com/v2/demo");
+const ETHERSCAN_API_KEY = vars.get("ETHERSCAN_API_KEY", "");
 
 const config: HardhatUserConfig = {
   solidity: "0.8.28",
@@ -14,18 +16,18 @@ const config: HardhatUserConfig = {
   },
   networks: {
     sepolia: {
-      url: process.env.SEPOLIA_RPC_URL || "https://eth-sepolia.g.alchemy.com/v2/YOUR-API-KEY",
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      url: SEPOLIA_RPC_URL,
+      accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
       chainId: 11155111
     },
     holesky: {
-      url: process.env.HOLESKY_RPC_URL || "https://ethereum-holesky.publicnode.com",
-      accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : [],
+      url: "https://ethereum-holesky.publicnode.com",
+      accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
       chainId: 17000
     }
   },
   etherscan: {
-    apiKey: process.env.ETHERSCAN_API_KEY || ""
+    apiKey: ETHERSCAN_API_KEY
   }
 };
 

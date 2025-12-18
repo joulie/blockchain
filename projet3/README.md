@@ -1,6 +1,6 @@
 # Projet 3 - DApp Système de Vote
 
-## 🎯 Objectif
+## Objectif
 Créer une DApp complète avec interface frontend pour le système de vote décentralisé.
 
 ## Spécifications
@@ -59,7 +59,7 @@ projet3/
 
 ## Guide de Mise en Place
 
-### Phase 1 : Optimisation du Smart Contract ⏳
+### Phase 1 : Optimisation du Smart Contract 
 
 #### 1.2 Améliorations fonctionnelles
 - [ ] Permettre à tout le monde de voir les propositions (getter public)
@@ -69,26 +69,28 @@ projet3/
 ### Phase 2 : Création du Frontend 
 
 #### 2.1 Initialisation du projet Next.js
-\`\`\`bash
+```bash
 cd /home/alex/dev/blockchain/projet3
 npx create-next-app@latest frontend
-\`\`\`
+```
 
 #### 2.2 Installation des dépendances web3
-\`\`\`bash
+```bash
 cd frontend
 npm install ethers@^6.4.0
 npm install wagmi viem@2.x @tanstack/react-query
 npm install @rainbow-me/rainbowkit --legacy-peer-deps
-\`\`\`
+```
 
 ## Commandes utilisées
-cd /home/alex/dev/blockchain/projet3 && npm install @openzeppelin/contracts --legacy-peer-deps  
+```cd /home/alex/dev/blockchain/projet3 && npm install @openzeppelin/contracts --legacy-peer-deps```
 
-passage de uint à uint256 pour la DAPP quand on n'est pas exclusivement en solidity il faut spécifier uint256
+passage de uint à uint256 : pour la DAPP quand on n'est pas exclusivement en solidity il faut spécifier uint256
 
 specification des private : pas accessible depuis une DAPP si on ecrit seulement Proposal[]   proposalsArray; : si on n'ecrit pas private c'est internal et non accessible par la DAPP  
-cd /home/alex/dev/blockchain/projet3 && npm install dotenv --legacy-peer-deps
+
+utilisation de .env
+```cd /home/alex/dev/blockchain/projet3 && npm install dotenv --legacy-peer-deps```
 
 tester le deploiement sur sepolia  
-cd /home/alex/dev/blockchain/projet3 && npx hardhat run scripts/deploy.ts
+```cd /home/alex/dev/blockchain/projet3 && npx hardhat run scripts/deploy.ts```
