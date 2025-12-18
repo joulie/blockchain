@@ -8,6 +8,7 @@ import ProposalList from '@/components/ProposalList';
 import VoteSection from '@/components/VoteSection';
 import Results from '@/components/Results';
 import WorkflowStatus from '@/components/WorkflowStatus';
+import VotersList from '@/components/VotersList';
 
 export default function Home() {
   const { address, isConnected } = useAccount();
@@ -42,12 +43,14 @@ export default function Home() {
             <AdminPanel />
 
             {/* Propositions et Vote */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="space-y-8">
               <div className="space-y-8">
                 <ProposalForm />
                 <VoteSection />
               </div>
-              <div>
+              
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <VotersList />
                 <ProposalList />
               </div>
             </div>

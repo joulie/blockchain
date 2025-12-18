@@ -234,4 +234,23 @@ contract Voting is Ownable, ReentrancyGuard {
         );
         return proposalsArray[winningProposalID];
     }
+
+    // Réinitialise le workflow pour recommencer un nouveau vote
+    function resetWorkflow() external onlyOwner {
+        require(
+            workflowStatus == WorkflowStatus.VotesTallied,
+            "Can only reset after votes are tallied"
+        );
+        
+        // Réinitialiser le workflow au début
+        workflowStatus = WorkflowStatus.RegisteringVoters;
+        
+        // Réinitialiser l'ID de la proposition gagnante
+        winningProposalID = 0;
+        
+        // Vider le tableau des propositions
+        delete proposalsArray;
+        
+        emit WorkflowStatusChange(WorkflowStatus.VotesTallied, WorkflowStatus.RegisteringVoters);
+    }
 }

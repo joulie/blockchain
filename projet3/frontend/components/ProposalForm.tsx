@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+import { useState, useEffect } from 'react';
+import { useWriteContract, useWaitForTransactionReceipt, useReadContract, useWatchContractEvent } from 'wagmi';
 import VotingABI from '@/lib/contracts/VotingABI.json';
 
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_VOTING_CONTRACT_ADDRESS as `0x${string}`;
@@ -9,8 +9,31 @@ const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_VOTING_CONTRACT_ADDRESS as `0x$
 export default function ProposalForm() {
   const [description, setDescription] = useState('');
   
+  const { data: workflowStatus, refetch } = useReadContract({
+    address: CONTRACT_ADDRESS,
+    abi: VotingABI,
+    functionName: 'workflowStatus',
+  });
+
+  // Écouter les changements de statut
+  useWatchContractEvent({
+    address: CONTRACT_ADDRESS,
+    abi: VotingABI,
+    eventName: 'WorkflowStatusChange',
+    onLogs() {
+      refetch();
+    },
+  });
+  
   const { writeContract, data: hash, isPending } = useWriteContract();
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
+
+  // Réinitialiser le formulaire après succès
+  useEffect(() => {
+    if (isSuccess) {
+      setDescription('');
+    }
+  }, [isSuccess]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,8 +47,9 @@ export default function ProposalForm() {
     });
   };
 
-  if (isSuccess) {
-    setDescription('');
+  // N'affiche le composant que si on est en phase d'enregistrement des propositions (WorkflowStatus = 1)
+  if (workflowStatus !== 1) {
+    return null;
   }
 
   return (

@@ -292,6 +292,13 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "resetWorkflow",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",

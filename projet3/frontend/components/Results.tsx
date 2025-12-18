@@ -1,6 +1,6 @@
 'use client';
 
-import { useReadContract } from 'wagmi';
+import { useReadContract, useWatchContractEvent } from 'wagmi';
 import VotingABI from '@/lib/contracts/VotingABI.json';
 
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_VOTING_CONTRACT_ADDRESS as `0x${string}`;
@@ -11,26 +11,56 @@ interface Proposal {
 }
 
 export default function Results() {
-  const { data: workflowStatus } = useReadContract({
+  const { data: workflowStatus, refetch: refetchStatus } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
     functionName: 'workflowStatus',
   });
 
-  const { data: winningProposal } = useReadContract({
+  // Écouter les changements de statut
+  useWatchContractEvent({
+    address: CONTRACT_ADDRESS,
+    abi: VotingABI,
+    eventName: 'WorkflowStatusChange',
+    onLogs() {
+      refetchStatus();
+    },
+  });
+
+  // Workflow status 5 = VotesTallied
+  const isVotesTallied = workflowStatus === 5;
+
+  const { data: winningProposal, refetch: refetchWinner } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
     functionName: 'getWinningProposal',
+    query: {
+      enabled: isVotesTallied, // N'appelle la fonction que si les votes sont comptabilisés
+    }
   }) as { data: Proposal | undefined };
+
+  // Recharger le gagnant quand le statut change
+  useWatchContractEvent({
+    address: CONTRACT_ADDRESS,
+    abi: VotingABI,
+    eventName: 'WorkflowStatusChange',
+    onLogs() {
+      if (isVotesTallied) {
+        refetchWinner();
+      }
+    },
+  });
 
   const { data: winningProposalID } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
     functionName: 'winningProposalID',
+    query: {
+      enabled: isVotesTallied,
+    }
   });
 
-  // Workflow status 5 = VotesTallied
-  if (workflowStatus !== 5) {
+  if (!isVotesTallied) {
     return null;
   }
 

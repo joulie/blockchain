@@ -1,6 +1,6 @@
 'use client';
 
-import { useReadContract } from 'wagmi';
+import { useReadContract, useWatchContractEvent } from 'wagmi';
 import VotingABI from '@/lib/contracts/VotingABI.json';
 
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_VOTING_CONTRACT_ADDRESS as `0x${string}`;
@@ -15,10 +15,21 @@ const workflowStatusNames = [
 ];
 
 export default function WorkflowStatus() {
-  const { data: workflowStatus } = useReadContract({
+  const { data: workflowStatus, refetch } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
     functionName: 'workflowStatus',
+  });
+
+  // Écouter les changements de statut
+  useWatchContractEvent({
+    address: CONTRACT_ADDRESS,
+    abi: VotingABI,
+    eventName: 'WorkflowStatusChange',
+    onLogs() {
+      // Recharger le statut quand il change
+      refetch();
+    },
   });
 
   const statusIndex = typeof workflowStatus === 'number' ? workflowStatus : 0;

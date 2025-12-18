@@ -116,10 +116,16 @@ install des dependances fonctionnelles
 ```cd /home/alex/dev/blockchain/projet3/frontend && npm uninstall wagmi @rainbow-me/rainbowkit && npm install wagmi@^2.19.0 @rainbow-me/rainbowkit@^2.2.0 --legacy-peer-deps```
 lancer le projet
 ```npx hardhat run scripts/deploy.ts --network localhost```
-démarrer le noeud local
+
+1. copier l'artifact dans le front
+`cd /home/alex/dev/blockchain/projet3 && node -e "const fs = require('fs'); const artifact = JSON.parse(fs.readFileSync('artifacts/contracts/Voting.sol/Voting.json')); fs.writeFileSync('frontend/lib/contracts/VotingABI.json', JSON.stringify(artifact.abi, null, 2));"`
+2. démarrer le noeud local
 ```cd /home/alex/dev/blockchain/projet3 && npx hardhat node```
-deployer le contrat
+3. deployer le contrat
 ```cd /home/alex/dev/blockchain/projet3 && npx hardhat run scripts/deploy.ts --network localhost```
-```cd /home/alex/dev/blockchain/projet3 && npx hardhat run scripts/deploy.ts --network sepolia```
-lancer le sercvuer next
+ou ```cd /home/alex/dev/blockchain/projet3 && npx hardhat run scripts/deploy.ts --network sepolia```
+4. récupérer le NEXT_PUBLIC_VOTING_CONTRACT_ADDRESS=0x5FbDB2315678afecb367f032d93F642f64180aa3 dans le .env.local du front
+5. lancer le serveur next
 ```cd /home/alex/dev/blockchain/projet3/frontend && npm run dev```
+si on modifie le contrat il faut le recompiler 
+`cd /home/alex/dev/blockchain/projet3 && npx hardhat clean && npx hardhat compile`

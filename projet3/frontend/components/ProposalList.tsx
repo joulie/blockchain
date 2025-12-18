@@ -1,6 +1,6 @@
 'use client';
 
-import { useReadContract } from 'wagmi';
+import { useReadContract, useWatchContractEvent } from 'wagmi';
 import VotingABI from '@/lib/contracts/VotingABI.json';
 
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_VOTING_CONTRACT_ADDRESS as `0x${string}`;
@@ -11,11 +11,30 @@ interface Proposal {
 }
 
 export default function ProposalList() {
-  const { data: proposals, isLoading } = useReadContract({
+  const { data: proposals, isLoading, refetch } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
     functionName: 'getAllProposals',
-  }) as { data: Proposal[] | undefined; isLoading: boolean };
+  }) as { data: Proposal[] | undefined; isLoading: boolean; refetch: () => void };
+
+  // Écouter les nouvelles propositions et les votes
+  useWatchContractEvent({
+    address: CONTRACT_ADDRESS,
+    abi: VotingABI,
+    eventName: 'ProposalRegistered',
+    onLogs() {
+      refetch();
+    },
+  });
+
+  useWatchContractEvent({
+    address: CONTRACT_ADDRESS,
+    abi: VotingABI,
+    eventName: 'Voted',
+    onLogs() {
+      refetch();
+    },
+  });
 
   if (isLoading) {
     return (
