@@ -92,3 +92,51 @@ projet2/
 ## Contexte
 
 Projet réalisé dans le cadre de la formation Alyra
+
+# Commandes linux utiles
+
+## Installation initiale
+npm init -y
+
+## Installation des dépendances Hardhat (avec --legacy-peer-deps pour éviter les conflits)
+npm install --save-dev hardhat @nomicfoundation/hardhat-toolbox @nomicfoundation/hardhat-ethers ethers @typechain/hardhat typechain --legacy-peer-deps
+
+## Installation d'OpenZeppelin
+npm install @openzeppelin/contracts --legacy-peer-deps
+
+## Installation des packages pour les tests
+npm install --save-dev @nomicfoundation/hardhat-chai-matchers chai --legacy-peer-deps
+
+## Organisation des fichiers
+mkdir -p contracts
+
+## En cas de problème : Réinitialisation complète du projet
+rm -rf node_modules package-lock.json
+# Puis réinstaller avec npm install
+
+## Compilation du contrat
+npx hardhat compile
+
+## Lancer les tests
+npx hardhat test
+
+## Lancer un test spécifique
+npx hardhat test TU/Voting.test.ts
+
+## Autres commandes utiles
+
+# Nettoyer les artifacts et cache
+npx hardhat clean
+
+# Voir les comptes disponibles
+npx hardhat accounts
+
+# Obtenir de l'aide
+npx hardhat help
+
+# Voir les comptes de test hardhat utilisables
+npx hardhat node
+
+# Recompiler et relancer
+cd /home/alex/dev/blockchain/projet2 && npx hardhat clean && npx hardhat compile --force
+cd /home/alex/dev/blockchain/projet2 && npx hardhat test TU/Voting.t.ts
