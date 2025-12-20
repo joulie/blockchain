@@ -75,14 +75,6 @@ export default function AdminPanel() {
     }
   }, [isSuccess]);
 
-  if (!address || !owner) {
-    return null; // Chargement en cours
-  }
-
-  if (!isOwner) {
-    return null; // Pas le propriétaire
-  }
-
   const addVoter = async () => {
     if (!voterAddress) return;
     setErrorMessage('');
@@ -101,41 +93,42 @@ export default function AdminPanel() {
     }
   };
 
-  const changeWorkflowStatus = (functionName: string) => {
-    setErrorMessage('');
-    setSuccessMessage('');
-    try {
-      writeContract({
-        address: CONTRACT_ADDRESS,
-        abi: VotingABI,
-        functionName,
-      });
-    } catch (err) {
-      setErrorMessage('❌ Erreur lors du changement de statut');
-      setTimeout(() => setErrorMessage(''), 5000);
-    }
-  };
+  if (!address || !owner) {
+    return null; // Chargement en cours
+  }
+
+  if (!isOwner) {
+    return null; // Pas le propriétaire
+  }
 
   return (
-    <div className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg shadow-md p-6 border-2 border-purple-200">
-      <h2 className="text-xl font-bold text-purple-800 mb-4">Panel Administrateur</h2>
+    <div className="glass rounded-2xl p-6 border border-purple-500/30 glow-purple">
+      <div className="flex items-center space-x-3 mb-6">
+        <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+          <span className="text-xl">⚙️</span>
+        </div>
+        <div>
+          <h2 className="text-xl font-bold text-white">Admin Panel</h2>
+          <p className="text-xs text-gray-400">Voter Management</p>
+        </div>
+      </div>
       
       {/* Messages d'erreur et de succès */}
       {errorMessage && (
-        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg max-h-32 overflow-y-auto text-sm break-words">
+        <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl text-sm backdrop-blur">
           {errorMessage}
         </div>
       )}
       {successMessage && (
-        <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+        <div className="mb-4 p-3 bg-green-500/10 border border-green-500/30 text-green-400 rounded-xl backdrop-blur">
           {successMessage}
         </div>
       )}
       
       {/* Ajouter un votant */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Ajouter un votant
+        <label className="block text-sm font-medium text-gray-300 mb-2">
+          👥 Add Voter
         </label>
         <div className="flex gap-2">
           <input
@@ -143,67 +136,25 @@ export default function AdminPanel() {
             placeholder="0x..."
             value={voterAddress}
             onChange={(e) => setVoterAddress(e.target.value)}
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+            className="flex-1 px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
           />
           <button
             onClick={addVoter}
             disabled={isPending || isConfirming || !voterAddress}
-            className="px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+            className="px-6 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl hover:from-purple-600 hover:to-pink-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all font-medium glow-purple"
           >
-            {isPending || isConfirming ? '⏳' : 'Ajouter'}
-          </button>
-        </div>
-      </div>
-
-      {/* Gestion du workflow */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Gestion du workflow
-        </label>
-        <div className="grid grid-cols-2 gap-2">
-          <button
-            onClick={() => changeWorkflowStatus('startProposalsRegistering')}
-            disabled={isPending || isConfirming}
-            className="px-4 py-2 bg-blue-400 text-white text-sm rounded-lg hover:bg-blue-500 disabled:bg-gray-300 transition-colors"
-          >
-            Démarrer propositions
-          </button>
-          <button
-            onClick={() => changeWorkflowStatus('endProposalsRegistering')}
-            disabled={isPending || isConfirming}
-            className="px-4 py-2 bg-blue-400 text-white text-sm rounded-lg hover:bg-blue-500 disabled:bg-gray-300 transition-colors"
-          >
-            Fin propositions
-          </button>
-          <button
-            onClick={() => changeWorkflowStatus('startVotingSession')}
-            disabled={isPending || isConfirming}
-            className="px-4 py-2 bg-blue-400 text-white text-sm rounded-lg hover:bg-blue-500 disabled:bg-gray-300 transition-colors"
-          >
-            Démarrer vote
-          </button>
-          <button
-            onClick={() => changeWorkflowStatus('endVotingSession')}
-            disabled={isPending || isConfirming}
-            className="px-4 py-2 bg-blue-400 text-white text-sm rounded-lg hover:bg-blue-500 disabled:bg-gray-300 transition-colors"
-          >
-            Fin vote
-          </button>
-          <button
-            onClick={() => changeWorkflowStatus('tallyVotes')}
-            disabled={isPending || isConfirming}
-            className="col-span-2 px-4 py-2 bg-blue-400 text-white text-sm rounded-lg hover:bg-blue-500 disabled:bg-gray-300 transition-colors"
-          >
-            Comptabiliser les votes
+            {isPending || isConfirming ? '⏳' : 'Add'}
           </button>
         </div>
       </div>
 
       {(isPending || isConfirming) && (
-        <p className="mt-4 text-sm text-gray-600 text-center">
-          {isPending && 'Confirmation en cours...'}
-          {isConfirming && 'Transaction en cours...'}
-        </p>
+        <div className="mt-4 p-3 bg-cyan-500/10 border border-cyan-500/30 rounded-xl">
+          <p className="text-sm text-cyan-400 text-center animate-pulse">
+            {isPending && '⏳ Awaiting confirmation...'}
+            {isConfirming && '⚡ Transaction processing...'}
+          </p>
+        </div>
       )}
     </div>
   );

@@ -38,42 +38,64 @@ export default function ProposalList() {
 
   if (isLoading) {
     return (
-      <div className="bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-700">
-        <h2 className="text-xl font-bold text-green-400 mb-4">📋 Propositions</h2>
-        <p className="text-gray-400 text-center">Chargement...</p>
+      <div className="glass rounded-2xl p-6 border border-green-500/30">
+        <h2 className="text-xl font-bold text-white mb-4 flex items-center">
+          <span className="mr-2">📋</span> Proposals
+        </h2>
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-cyan-400"></div>
+        </div>
       </div>
     );
   }
 
   if (!proposals || proposals.length === 0) {
     return (
-      <div className="bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-700">
-        <h2 className="text-xl font-bold text-green-400 mb-4">📋 Propositions</h2>
-        <p className="text-gray-400 text-center">Aucune proposition pour le moment</p>
+      <div className="glass rounded-2xl p-6 border border-green-500/30">
+        <h2 className="text-xl font-bold text-white mb-4 flex items-center">
+          <span className="mr-2">📋</span> Proposals
+        </h2>
+        <div className="text-center py-12">
+          <div className="text-5xl mb-3">📭</div>
+          <p className="text-gray-400">No proposals yet</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">
-        Propositions ({proposals.length})
-      </h2>
-      <div className="space-y-3 max-h-96 overflow-y-auto">
+    <div className="glass rounded-2xl p-6 border border-green-500/30 glow-green">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center space-x-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg flex items-center justify-center">
+            <span className="text-xl">📋</span>
+          </div>
+          <div>
+            <h2 className="text-xl font-bold text-white">Proposals</h2>
+            <p className="text-xs text-gray-400">{proposals.length} active</p>
+          </div>
+        </div>
+        <div className="px-3 py-1 bg-green-500/20 border border-green-500/30 rounded-full">
+          <span className="text-green-400 font-bold">{proposals.length}</span>
+        </div>
+      </div>
+      <div className="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar">
         {proposals.map((proposal, index) => (
           <div
             key={index}
-            className="p-4 bg-gray-50 border border-gray-200 rounded-lg hover:border-blue-400 transition-colors"
+            className="p-4 bg-white/5 border border-white/10 rounded-xl hover:border-green-500/50 hover:bg-white/10 transition-all group"
           >
             <div className="flex justify-between items-start mb-2">
-              <span className="text-xs font-medium text-gray-500">
-                Proposition #{index}
+              <span className="text-xs font-medium text-gray-400">
+                Proposal #{index}
               </span>
-              <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full">
-                {proposal.voteCount.toString()} vote{Number(proposal.voteCount) !== 1 ? 's' : ''}
-              </span>
+              <div className="flex items-center space-x-2">
+                <span className="text-xs bg-green-500/20 text-green-400 px-2 py-1 rounded-full border border-green-500/30 font-mono">
+                  {proposal.voteCount.toString()} 🗳️
+                </span>
+              </div>
             </div>
-            <p className="text-gray-900">{proposal.description}</p>
+            <p className="text-white text-sm leading-relaxed">{proposal.description}</p>
           </div>
         ))}
       </div>

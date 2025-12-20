@@ -16,6 +16,21 @@ projet2/package-lock.json
 projet2/TU/Voting.test.ts
 projet2/TU/Voting.total.t.ts
 
+# Projet3
+projet3/node_modules/
+projet3/dist/
+projet3/.env
+projet3/cache/
+projet3/artifacts/
+projet3/typechain-types/
+projet3/coverage/
+projet3/coverage.json
+projet3/logs/
+projet3/package-lock.json
+projet3/TU/Voting.test.ts
+projet3/TU/Voting.total.t.ts
+#projet3/README.md
+
 # Fichiers IDE
 .idea/
 *.swp

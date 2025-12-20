@@ -65,34 +65,53 @@ export default function Results() {
   }
 
   return (
-    <div className="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg shadow-md p-6 border-2 border-yellow-300">
-      <h2 className="text-2xl font-bold text-orange-800 mb-4 text-center">
-        Résultats du Vote
-      </h2>
+    <div className="glass rounded-2xl p-6 border border-yellow-500/30 relative overflow-hidden">
+      {/* Effet de brillance */}
+      <div className="absolute top-0 right-0 w-32 h-32 bg-yellow-500/10 rounded-full blur-3xl"></div>
       
-      {winningProposal ? (
-        <div className="text-center space-y-4">
-          <div className="bg-white rounded-lg p-6 shadow-lg border border-orange-200">
-            <p className="text-sm text-gray-600 mb-2">Proposition gagnante</p>
-            <p className="text-xl font-bold text-orange-600 mb-2">
-              #{winningProposalID?.toString()}
-            </p>
-            <p className="text-lg text-gray-900 mb-4">
-              {winningProposal.description}
-            </p>
-            <div className="inline-block bg-orange-100 text-orange-800 px-4 py-2 rounded-full border border-orange-300">
-              <span className="font-semibold">
-                {winningProposal.voteCount.toString()} vote{Number(winningProposal.voteCount) !== 1 ? 's' : ''}
-              </span>
-            </div>
+      <div className="relative z-10">
+        <div className="text-center mb-6">
+          <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
+            <span className="text-3xl">🏆</span>
           </div>
-          <p className="text-sm text-gray-600">
-            Les votes ont été comptabilisés avec succès !
-          </p>
+          <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-500 mb-1">
+            Vote Results
+          </h2>
+          <p className="text-gray-400 text-sm">Winner announcement</p>
         </div>
-      ) : (
-        <p className="text-center text-gray-600">Chargement des résultats...</p>
-      )}
+        
+        {winningProposal ? (
+          <div className="space-y-4">
+            <div className="bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-xl p-6 border border-yellow-500/30">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-xs text-gray-400 font-mono">Winning Proposal</span>
+                <span className="text-lg font-bold text-yellow-400">#{winningProposalID?.toString()}</span>
+              </div>
+              <p className="text-white text-lg mb-4 font-medium">
+                {winningProposal.description}
+              </p>
+              <div className="flex items-center justify-center space-x-2">
+                <div className="px-4 py-2 bg-yellow-500/20 border border-yellow-500/40 rounded-full">
+                  <span className="text-yellow-400 font-bold text-lg">
+                    {winningProposal.voteCount.toString()}
+                  </span>
+                  <span className="text-yellow-400/70 text-sm ml-2">
+                    vote{Number(winningProposal.voteCount) !== 1 ? 's' : ''}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <p className="text-center text-sm text-gray-400">
+              ✅ Votes successfully tallied
+            </p>
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-yellow-400 mx-auto"></div>
+            <p className="text-gray-400 mt-4">Loading results...</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

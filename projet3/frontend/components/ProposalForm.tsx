@@ -53,33 +53,41 @@ export default function ProposalForm() {
   }
 
   return (
-    <div className="bg-gray-800 rounded-lg shadow-lg p-6 border border-gray-700">
-      <h2 className="text-xl font-bold text-green-400 mb-4">Proposer</h2>
+    <div className="glass rounded-2xl p-6 border border-cyan-500/30 glow-cyan">
+      <div className="flex items-center space-x-3 mb-6">
+        <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center">
+          <span className="text-xl">📝</span>
+        </div>
+        <div>
+          <h2 className="text-xl font-bold text-white">Submit Proposal</h2>
+          <p className="text-xs text-gray-400">Add your proposal</p>
+        </div>
+      </div>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-300 mb-2">
-            Description de la proposition
+            💡 Proposal Description
           </label>
           <textarea
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Décrivez votre proposition..."
+            placeholder="Describe your proposal..."
             rows={4}
-            className="w-full px-4 py-2 bg-white border border-gray-300 text-gray-900 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none placeholder-gray-400"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 text-white rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent resize-none placeholder-gray-500 transition-all"
           />
         </div>
         <button
           type="submit"
           disabled={isPending || isConfirming || !description.trim()}
-          className="w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="w-full px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white font-medium rounded-xl hover:from-cyan-600 hover:to-blue-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all glow-cyan"
         >
-          {isPending || isConfirming ? 'Envoi en cours...' : 'Soumettre la proposition'}
+          {isPending || isConfirming ? '⏳ Submitting...' : '🚀 Submit Proposal'}
         </button>
       </form>
       {isSuccess && (
-        <p className="mt-4 text-sm text-green-600 text-center">
-          Proposition ajoutée avec succès !
-        </p>
+        <div className="mt-4 p-3 bg-green-500/10 border border-green-500/30 text-green-400 rounded-xl text-center">
+          ✅ Proposal added successfully!
+        </div>
       )}
     </div>
   );

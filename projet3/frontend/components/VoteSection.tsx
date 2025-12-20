@@ -119,34 +119,49 @@ export default function VoteSection() {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
-      <h2 className="text-xl font-bold text-gray-800 mb-4">Voter</h2>
+    <div className="glass rounded-2xl p-6 border border-orange-500/30 glow-purple">
+      <div className="flex items-center space-x-3 mb-6">
+        <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+          <span className="text-xl">🗳️</span>
+        </div>
+        <div>
+          <h2 className="text-xl font-bold text-white">Cast Vote</h2>
+          <p className="text-xs text-gray-400">Select your choice</p>
+        </div>
+      </div>
       
       {/* Messages d'erreur et de succès */}
       {errorMessage && (
-        <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg max-h-32 overflow-y-auto text-sm break-words">
+        <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 text-red-400 rounded-xl text-sm backdrop-blur">
           {errorMessage}
         </div>
       )}
       {successMessage && (
-        <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded-lg">
+        <div className="mb-4 p-3 bg-green-500/10 border border-green-500/30 text-green-400 rounded-xl backdrop-blur">
           {successMessage}
         </div>
       )}
       
       <form onSubmit={handleVote} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Sélectionnez une proposition
+          <label className="block text-sm font-medium text-gray-300 mb-2">
+            📋 Select Proposal
           </label>
           <select
             value={selectedProposal}
             onChange={(e) => setSelectedProposal(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 text-white rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all appearance-none cursor-pointer"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='rgb(156, 163, 175)'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E")`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'right 0.75rem center',
+              backgroundSize: '1.5em 1.5em',
+              paddingRight: '2.5rem'
+            }}
           >
-            <option value="">Choisir une proposition...</option>
+            <option value="" className="bg-gray-800">Choose a proposal...</option>
             {proposals.map((proposal, index) => (
-              <option key={index} value={index}>
+              <option key={index} value={index} className="bg-gray-800">
                 #{index} - {proposal.description}
               </option>
             ))}
@@ -155,16 +170,11 @@ export default function VoteSection() {
         <button
           type="submit"
           disabled={isPending || isConfirming || !selectedProposal}
-          className="w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+          className="w-full px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 text-white font-medium rounded-xl hover:from-orange-600 hover:to-red-600 disabled:opacity-50 disabled:cursor-not-allowed transition-all glow-purple"
         >
-          {isPending || isConfirming ? 'Vote en cours...' : 'Confirmer mon vote'}
+          {isPending || isConfirming ? '⏳ Voting...' : '✓ Confirm Vote'}
         </button>
       </form>
-      {isSuccess && (
-        <p className="mt-4 text-sm text-green-600 text-center">
-          Vote enregistré avec succès !
-        </p>
-      )}
     </div>
   );
 }
