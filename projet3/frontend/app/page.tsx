@@ -119,28 +119,6 @@ export default function Home() {
           </div>
         )}
       </main>
-
-      {/* Pied de page */}
-      <footer className="relative z-10 glass border-t border-white/10 mt-12">
-        <div className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center text-sm">
-            {/* Informations sur l'application */}
-            <div className="text-gray-400">
-              <p className="font-semibold text-cyan-400">Voting Protocol v1.0</p>
-              <p className="text-xs mt-1">Powered by Ethereum • Built with ❤️</p>
-            </div>
-            {/* Affichage de l'adresse connectée */}
-            {address && (
-              <div className="text-right">
-                <p className="text-gray-400 text-xs">Connected</p>
-                <p className="text-cyan-400 font-mono text-xs">
-                  {address.slice(0, 6)}...{address.slice(-4)}
-                </p>
-              </div>
-            )}
-          </div>
-        </div>
-      </footer>
     </div>
   );
 }
