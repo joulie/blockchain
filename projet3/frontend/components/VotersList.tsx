@@ -1,30 +1,56 @@
+// Directive pour indiquer que ce composant s'exécute côté client
 'use client';
 
+// Import des hooks React pour la gestion d'état
 import { useEffect, useState } from 'react';
+// Import des hooks Wagmi pour interagir avec la blockchain
 import { useAccount, useReadContract, useWatchContractEvent, usePublicClient } from 'wagmi';
+// Import de l'ABI du contrat Voting
 import VotingABI from '@/lib/contracts/VotingABI.json';
 
+// Adresse du contrat de vote depuis les variables d'environnement
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_VOTING_CONTRACT_ADDRESS as `0x${string}`;
 
+/**
+ * Composant VotersList - Liste des votants enregistrés
+ * 
+ * Ce composant affiche la liste de tous les votants enregistrés.
+ * Il n'est visible que pour le propriétaire du contrat.
+ * 
+ * Fonctionnalités :
+ * - Affichage du nombre total de votants
+ * - Liste scrollable des adresses
+ * - Récupération des événements passés au chargement
+ * - Mise à jour en temps réel via les événements du contrat
+ */
 export default function VotersList() {
+  // Récupération de l'adresse du wallet connecté
   const { address } = useAccount();
+  // État pour stocker la liste des adresses des votants
   const [voters, setVoters] = useState<string[]>([]);
+  // Client public pour lire les logs de la blockchain
   const publicClient = usePublicClient();
   
+  // Lecture de l'adresse du propriétaire du contrat
   const { data: owner } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
     functionName: 'owner',
   });
 
+  // Vérification si l'utilisateur connecté est le propriétaire
   const isOwner = address && owner && address.toLowerCase() === (owner as string).toLowerCase();
 
-  // Récupérer les événements passés au chargement
+  /**
+   * Effet pour récupérer tous les votants enregistrés depuis le début
+   * Utilise les logs de la blockchain pour obtenir l'historique complet
+   */
   useEffect(() => {
     const fetchPastVoters = async () => {
       if (!publicClient) return;
       
       try {
+        // Récupération de tous les événements VoterRegistered depuis le bloc 0
         const logs = await publicClient.getLogs({
           address: CONTRACT_ADDRESS,
           event: {
@@ -38,6 +64,7 @@ export default function VotersList() {
           toBlock: 'latest'
         });
 
+        // Extraction des adresses depuis les logs et filtrage des valeurs nulles
         const voterAddresses = logs.map((log: any) => log.args.voterAddress).filter(Boolean);
         setVoters(voterAddresses as string[]);
       } catch (error) {
@@ -45,12 +72,16 @@ export default function VotersList() {
       }
     };
 
+    // Exécuter uniquement si l'utilisateur est owner
     if (isOwner) {
       fetchPastVoters();
     }
   }, [publicClient, isOwner]);
 
-  // Écouter les nouveaux événements VoterRegistered
+  /**
+   * Écoute des nouveaux événements VoterRegistered en temps réel
+   * Ajoute les nouveaux votants à la liste sans doublons
+   */
   useWatchContractEvent({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
@@ -58,6 +89,7 @@ export default function VotersList() {
     onLogs(logs) {
       logs.forEach((log: any) => {
         const voterAddress = log.args.voterAddress;
+        // Vérifier que l'adresse existe et n'est pas déjà dans la liste
         if (voterAddress && !voters.includes(voterAddress)) {
           setVoters(prev => [...prev, voterAddress]);
         }
@@ -65,8 +97,9 @@ export default function VotersList() {
     },
   });
 
+  // Ne pas afficher le composant si l'utilisateur n'est pas admin
   if (!isOwner) {
-    return null; // Pas visible si pas admin
+    return null;
   }
 
   return (

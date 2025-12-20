@@ -1,23 +1,43 @@
+// Directive pour indiquer que ce composant s'exécute côté client
 'use client';
 
+// Import des hooks Wagmi pour lire les données de la blockchain
 import { useReadContract, useWatchContractEvent } from 'wagmi';
+// Import de l'ABI du contrat Voting
 import VotingABI from '@/lib/contracts/VotingABI.json';
 
+// Adresse du contrat de vote depuis les variables d'environnement
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_VOTING_CONTRACT_ADDRESS as `0x${string}`;
 
+// Interface TypeScript pour définir la structure d'une proposition
 interface Proposal {
-  description: string;
-  voteCount: bigint;
+  description: string; // Description de la proposition
+  voteCount: bigint;   // Nombre de votes reçus
 }
 
+/**
+ * Composant Results - Affichage des résultats du vote
+ * 
+ * Ce composant affiche la proposition gagnante après que les votes
+ * ont été comptabilisés (WorkflowStatus = 5).
+ * 
+ * Le composant est automatiquement masqué avant cette phase.
+ * 
+ * Fonctionnalités :
+ * - Affichage de la proposition gagnante avec son ID
+ * - Nombre de votes reçus
+ * - Design avec trophée et effets visuels
+ * - Mise à jour automatique via les événements du contrat
+ */
 export default function Results() {
+  // Lecture du statut actuel du workflow
   const { data: workflowStatus, refetch: refetchStatus } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
     functionName: 'workflowStatus',
   });
 
-  // Écouter les changements de statut
+  // Écoute des changements de statut du workflow
   useWatchContractEvent({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
@@ -27,9 +47,10 @@ export default function Results() {
     },
   });
 
-  // Workflow status 5 = VotesTallied
+  // Vérification si les votes ont été comptabilisés (statut 5)
   const isVotesTallied = workflowStatus === 5;
 
+  // Récupération de la proposition gagnante (seulement si les votes sont comptabilisés)
   const { data: winningProposal, refetch: refetchWinner } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
@@ -51,6 +72,7 @@ export default function Results() {
     },
   });
 
+  // Récupération de l'ID de la proposition gagnante
   const { data: winningProposalID } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
@@ -60,6 +82,7 @@ export default function Results() {
     }
   });
 
+  // N'affiche le composant que si les votes sont comptabilisés
   if (!isVotesTallied) {
     return null;
   }

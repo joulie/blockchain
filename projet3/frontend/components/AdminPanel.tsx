@@ -1,29 +1,55 @@
+// Directive pour indiquer que ce composant s'exécute côté client
 'use client';
 
+// Import des hooks React pour la gestion d'état
 import { useState, useEffect } from 'react';
+// Import des hooks Wagmi pour interagir avec la blockchain
 import { useAccount, useWriteContract, useWaitForTransactionReceipt, useReadContract } from 'wagmi';
+// Import de l'ABI du contrat Voting
 import VotingABI from '@/lib/contracts/VotingABI.json';
 
+// Adresse du contrat de vote depuis les variables d'environnement
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_VOTING_CONTRACT_ADDRESS as `0x${string}`;
 
+/**
+ * Composant AdminPanel - Panneau d'administration
+ * 
+ * Ce composant permet au propriétaire du contrat d'ajouter des votants.
+ * Il n'est visible que pour l'adresse du propriétaire.
+ * 
+ * Fonctionnalités :
+ * - Ajout de votants par leur adresse Ethereum
+ * - Validation et gestion des erreurs (votant déjà enregistré, etc.)
+ * - Messages de feedback pour l'utilisateur
+ */
 export default function AdminPanel() {
+  // Récupération de l'adresse du wallet connecté
   const { address } = useAccount();
+  // État pour l'adresse du votant à ajouter
   const [voterAddress, setVoterAddress] = useState('');
+  // États pour les messages d'erreur et de succès
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   
+  // Lecture de l'adresse du propriétaire du contrat
   const { data: owner } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
     functionName: 'owner',
   });
 
+  // Hook pour écrire sur la blockchain (ajouter un votant)
   const { writeContract, data: hash, isPending, error } = useWriteContract();
+  // Hook pour attendre la confirmation de la transaction
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
 
+  // Vérification si l'utilisateur connecté est le propriétaire
   const isOwner = address && owner && address.toLowerCase() === (owner as string).toLowerCase();
 
-  // Gérer les erreurs
+  /**
+   * Effet pour gérer l'affichage des erreurs
+   * Analyse le message d'erreur et affiche un message en français plus clair
+   */
   useEffect(() => {
     if (error) {
       console.log('Erreur complète:', error); // Pour le debug

@@ -1,21 +1,42 @@
+// Directive pour indiquer que ce composant s'exécute côté client
 'use client';
 
+// Import des hooks React pour la gestion d'état
 import { useState, useEffect } from 'react';
+// Import des hooks Wagmi pour interagir avec la blockchain
 import { useWriteContract, useWaitForTransactionReceipt, useReadContract, useWatchContractEvent } from 'wagmi';
+// Import de l'ABI du contrat Voting
 import VotingABI from '@/lib/contracts/VotingABI.json';
 
+// Adresse du contrat de vote depuis les variables d'environnement
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_VOTING_CONTRACT_ADDRESS as `0x${string}`;
 
+/**
+ * Composant ProposalForm - Formulaire de soumission de proposition
+ * 
+ * Ce composant permet aux votants enregistrés de soumettre des propositions
+ * pendant la phase d'enregistrement des propositions (WorkflowStatus = 1).
+ * 
+ * Le composant est automatiquement masqué en dehors de cette phase.
+ * 
+ * Fonctionnalités :
+ * - Formulaire avec zone de texte pour la description
+ * - Validation de la saisie (non vide)
+ * - Réinitialisation automatique après soumission réussie
+ * - Message de confirmation visuel
+ */
 export default function ProposalForm() {
+  // État pour la description de la proposition
   const [description, setDescription] = useState('');
   
+  // Lecture du statut actuel du workflow
   const { data: workflowStatus, refetch } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
     functionName: 'workflowStatus',
   });
 
-  // Écouter les changements de statut
+  // Écoute des changements de statut du workflow pour mettre à jour l'affichage
   useWatchContractEvent({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
@@ -25,20 +46,32 @@ export default function ProposalForm() {
     },
   });
   
+  // Hook pour écrire sur la blockchain (ajouter une proposition)
   const { writeContract, data: hash, isPending } = useWriteContract();
+  // Hook pour attendre la confirmation de la transaction
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({ hash });
 
-  // Réinitialiser le formulaire après succès
+  /**
+   * Effet pour réinitialiser le formulaire après une soumission réussie
+   */
   useEffect(() => {
     if (isSuccess) {
       setDescription('');
     }
   }, [isSuccess]);
 
+  /**
+   * Gestionnaire de soumission du formulaire
+   * Envoie la transaction pour ajouter la proposition sur la blockchain
+   * 
+   * @param e - Événement de soumission du formulaire
+   */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    // Vérification que la description n'est pas vide
     if (!description.trim()) return;
 
+    // Appel de la fonction addProposal du contrat
     writeContract({
       address: CONTRACT_ADDRESS,
       abi: VotingABI,

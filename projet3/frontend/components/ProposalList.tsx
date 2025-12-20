@@ -1,38 +1,58 @@
+// Directive pour indiquer que ce composant s'exécute côté client
 'use client';
 
+// Import des hooks Wagmi pour lire les données de la blockchain
 import { useReadContract, useWatchContractEvent } from 'wagmi';
+// Import de l'ABI du contrat Voting
 import VotingABI from '@/lib/contracts/VotingABI.json';
 
+// Adresse du contrat de vote depuis les variables d'environnement
 const CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_VOTING_CONTRACT_ADDRESS as `0x${string}`;
 
+// Interface TypeScript pour définir la structure d'une proposition
 interface Proposal {
-  description: string;
-  voteCount: bigint;
+  description: string; // Description de la proposition
+  voteCount: bigint;   // Nombre de votes reçus (format BigInt pour les grands nombres)
 }
 
+/**
+ * Composant ProposalList - Liste des propositions
+ * 
+ * Ce composant affiche toutes les propositions enregistrées dans le contrat.
+ * Il se met automatiquement à jour lorsqu'une nouvelle proposition est ajoutée
+ * ou lorsqu'un vote est effectué.
+ * 
+ * Fonctionnalités :
+ * - Affichage du nombre total de propositions
+ * - Liste scrollable avec design moderne
+ * - Compteur de votes pour chaque proposition
+ * - Mise à jour en temps réel via les événements du contrat
+ */
 export default function ProposalList() {
+  // Récupération de toutes les propositions depuis le contrat
   const { data: proposals, isLoading, refetch } = useReadContract({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
     functionName: 'getAllProposals',
   }) as { data: Proposal[] | undefined; isLoading: boolean; refetch: () => void };
 
-  // Écouter les nouvelles propositions et les votes
+  // Écoute de l'événement ProposalRegistered pour actualiser la liste
   useWatchContractEvent({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
     eventName: 'ProposalRegistered',
     onLogs() {
-      refetch();
+      refetch(); // Recharger les propositions quand une nouvelle est ajoutée
     },
   });
 
+  // Écoute de l'événement Voted pour mettre à jour les compteurs de votes
   useWatchContractEvent({
     address: CONTRACT_ADDRESS,
     abi: VotingABI,
     eventName: 'Voted',
     onLogs() {
-      refetch();
+      refetch(); // Recharger les propositions quand un vote est effectué
     },
   });
 
